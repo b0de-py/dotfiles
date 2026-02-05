@@ -1,0 +1,41 @@
+{
+  "display": {
+    "max_length": 43,
+    "show_volume": true,
+    "show_player_name": false,
+    "paused_prefix": "󰏤 ",
+    "format": "{icon} {artist} - {title}"
+  },
+  "icons": {
+    "spotify": " ",
+    "vivaldi": " ",
+    "chromium": " ",
+    "firefox": " ",
+    "brave": " ",
+    "edge": "󰇩 ",
+    "safari": "裏 ",
+    "default": " "
+  },
+  "volume": {
+    "enabled": true,
+    "show_percentage": true,
+    "low_threshold": 30,
+    "medium_threshold": 70,
+    "icons": {
+      "muted": "󰝟 ",
+      "low": "󰖀 ",
+      "medium": "󰕾 ",
+      "high": "󰕾 "
+    }
+  },
+  "click_actions": {
+    "left_click": "play_pause",
+    "right_click": "show_menu",
+    "scroll_up": "next",
+    "scroll_down": "previous"
+  },
+  "prioritization": {
+    "prefer_playing": true,
+    "priority_order": ["spotify", "firefox", "chromium", "vivaldi", "brave", "default"]
+  }
+}
