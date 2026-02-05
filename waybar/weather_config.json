@@ -1,0 +1,27 @@
+{
+  "location": {
+    "name": "Guará, DF",
+    "latitude": "-15.82",
+    "longitude": "-47.98",
+    "timezone": "America/Sao_Paulo"
+  },
+  "units": {
+    "temperature": "celsius",
+    "wind_speed": "kmh"
+  },
+  "display": {
+    "show_location": true,
+    "show_forecast": true,
+    "forecast_hours": [6, 9, 11, 12, 15, 17, 19, 22, 24],
+    "cache_duration": 1800,
+    "update_interval": 1800
+  },
+  "alerts": {
+    "enabled": true,
+    "temperature_threshold": 35,
+    "air_quality": {
+      "enabled": false,
+      "threshold": 100
+    }
+  }
+}
