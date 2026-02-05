@@ -1,0 +1,9 @@
+{
+  "timezone": "America/Sao_Paulo",
+  "date_format": "%d %b, %a",
+  "first_weekday": 6,
+  "highlight_today": true,
+  "show_week_numbers": false,
+  "events_file": "~/.config/waybar/calendar_events.txt",
+  "max_events_tooltip": 10
+}
