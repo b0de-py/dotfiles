@@ -1,0 +1,6 @@
+{
+  "log_level": "INFO",
+  "cleanup_days": 7,
+  "enable_debug_files": true,
+  "max_log_size_mb": 10
+}
