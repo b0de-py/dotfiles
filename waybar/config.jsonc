@@ -18,7 +18,7 @@
     "bluetooth",
     "network",
     "pulseaudio",
-    "cpu",
+    "custom/cpu-detailed",
     "battery"
   ],
   "hyprland/workspaces": {
@@ -111,10 +111,17 @@
     "on-click": "python ~/.config/waybar/way_calendar.py 1",
     "tooltip": true
   },
+  "custom/cpu-detailed": {
+    "format": "{}",
+    "tooltip": true,
+    "exec": "python3 /home/fnzs/.config/waybar/cpu-detailed.py",
+    "return-type": "json",
+    //"interval": 2
+  },
 
   "cpu": {
     "interval": 5,
-    "format": "󰍛",
+    "format": "󰘚 {usage}%",
     "on-click": "omarchy-launch-or-focus-tui btop",
     "on-click-right": "alacritty"
   },
@@ -156,11 +163,11 @@
     }
   },
   "bluetooth": {
-    "format": "",
+    "format": "",
     "format-off": "󰂲",
-    "format-disabled": "󰂲",
-    "format-connected": "󰂱",
-    "format-no-controller": "",
+    "format-disabled": "󰂳",
+    "format-connected": "",
+    "format-connected-battery": " {device_battery_percentage}%",
     "tooltip-format": "Devices connected: {num_connections}",
     "on-click": "omarchy-launch-bluetooth"
   },
@@ -173,7 +180,7 @@
     "format-muted": "",
     "format-icons": {
       "headphone": "",
-      "default": ["", "", ""]
+      "default": [" ", "  ", "  "]
     }
   },
   "group/tray-expander": {
