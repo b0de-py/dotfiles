@@ -146,7 +146,7 @@ tooltip {
   margin-right: 7.5px;
 }
 
-#custom-weather.unavailable {
+#custom-weather.weather-error {
   min-width: 0;
   margin: 0;
   padding: 0;
