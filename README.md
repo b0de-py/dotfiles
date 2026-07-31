@@ -10,6 +10,7 @@ dotfiles/
 │   ├── branding/
 │   │   └── screensaver.txt       # Arte ASCII do screensaver (substitui o logo padrão do Omarchy)
 │   └── hypr/
+│       ├── autostart.conf        # Apps iniciados no login (exec-once)
 │       ├── bindings.conf         # Atalhos de teclado personalizados
 │       ├── hyprland.conf         # Window rules (opacidade por app)
 │       ├── hyprlock.conf         # Tela de bloqueio (fonte Fantasque Sans Mono)
@@ -78,6 +79,8 @@ Principais diferenças em relação ao padrão do Omarchy:
 | `SUPER + B` | Abre configurações de Bluetooth |
 | `SUPER + N` | Abre mixer de áudio |
 | `SUPER + ALT + RETURN` | Abre novo terminal com tmux |
+
+> **Atenção:** as linhas marcadas com `# [personal]` referenciam serviços específicos (serviços pessoais). Substitua ou remova conforme seu próprio setup.
 
 ### Input (`input.conf`)
 
