@@ -31,7 +31,9 @@ sudo sed -i 's/term_foreground_bright:.*/term_foreground_bright: ffcc00/' /boot/
 sudo sed -i 's/term_background_bright:.*/term_background_bright: 000000/' /boot/limine.conf
 
 echo "Fazendo backup da imagem original e injetando a sua logo do repositório..."
-sudo cp /usr/share/plymouth/themes/omarchy/logo.png /usr/share/plymouth/themes/omarchy/logo.png.bak
+if [ ! -f "/usr/share/plymouth/themes/omarchy/logo.png.bak" ]; then
+    sudo cp /usr/share/plymouth/themes/omarchy/logo.png /usr/share/plymouth/themes/omarchy/logo.png.bak
+fi
 
 # Pega a imagem 'logo-bode.png' que está na mesma pasta que este script
 sudo cp "$SCRIPT_DIR/logo-bode.png" /usr/share/plymouth/themes/omarchy/logo.png
