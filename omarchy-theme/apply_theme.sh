@@ -1,7 +1,24 @@
 #!/bin/bash
+set -Eeuo pipefail
 
 # Pega o diretório exato de onde o script está sendo executado no seu dotfiles
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
+
+echo "Validando pré-requisitos..."
+if [ ! -f "/boot/limine.conf" ]; then
+    echo "Erro: Arquivo /boot/limine.conf não encontrado. Abortando." >&2
+    exit 1
+fi
+
+if [ ! -f "$SCRIPT_DIR/logo-bode.png" ]; then
+    echo "Erro: Imagem $SCRIPT_DIR/logo-bode.png não encontrada. Abortando." >&2
+    exit 1
+fi
+
+if [ ! -d "/usr/share/plymouth/themes/omarchy" ]; then
+    echo "Erro: Diretório do tema Plymouth (/usr/share/plymouth/themes/omarchy) não encontrado. Abortando." >&2
+    exit 1
+fi
 
 echo "Aplicando as novas cores do Limine (amarelo: ffcc00 e fundo preto: 000000)..."
 sudo sed -i 's/interface_branding_color:.*/interface_branding_color: ffcc00/' /boot/limine.conf
