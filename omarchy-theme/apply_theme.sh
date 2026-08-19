@@ -4,9 +4,11 @@ set -Eeuo pipefail
 # Pega o diretório exato de onde o script está sendo executado no seu dotfiles
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
+LIMINE_CONF="$HOME/.local/share/omarchy/default/limine/limine.conf"
+
 echo "Validando pré-requisitos..."
-if [ ! -f "/boot/limine.conf" ]; then
-    echo "Erro: Arquivo /boot/limine.conf não encontrado. Abortando." >&2
+if [ ! -f "$LIMINE_CONF" ]; then
+    echo "Erro: Arquivo $LIMINE_CONF não encontrado. Abortando." >&2
     exit 1
 fi
 
@@ -21,18 +23,21 @@ if [ ! -d "/usr/share/plymouth/themes/omarchy" ]; then
 fi
 
 echo "Aplicando as novas cores do Limine (amarelo: ffcc00 e fundo preto: 000000)..."
-sudo sed -i 's/interface_branding_color:.*/interface_branding_color: ffcc00/' /boot/limine.conf
-sudo sed -i 's/interface_help_color:.*/interface_help_color: ffcc00/' /boot/limine.conf
-sudo sed -i 's/interface_help_color_bright:.*/interface_help_color_bright: ffcc00/' /boot/limine.conf
-sudo sed -i 's/term_background:.*/term_background: 000000/' /boot/limine.conf
-sudo sed -i 's/backdrop:.*/backdrop: 000000/' /boot/limine.conf
-sudo sed -i 's/term_foreground:.*/term_foreground: ffcc00/' /boot/limine.conf
-sudo sed -i 's/term_foreground_bright:.*/term_foreground_bright: ffcc00/' /boot/limine.conf
-sudo sed -i 's/term_background_bright:.*/term_background_bright: 000000/' /boot/limine.conf
+sed -i 's/interface_branding_color:.*/interface_branding_color: ffcc00/' "$LIMINE_CONF"
+sed -i 's/interface_help_color:.*/interface_help_color: ffcc00/' "$LIMINE_CONF"
+sed -i 's/interface_help_color_bright:.*/interface_help_color_bright: ffcc00/' "$LIMINE_CONF"
+sed -i 's/term_background:.*/term_background: 000000/' "$LIMINE_CONF"
+sed -i 's/backdrop:.*/backdrop: 000000/' "$LIMINE_CONF"
+sed -i 's/term_foreground:.*/term_foreground: ffcc00/' "$LIMINE_CONF"
+sed -i 's/term_foreground_bright:.*/term_foreground_bright: ffcc00/' "$LIMINE_CONF"
+sed -i 's/term_background_bright:.*/term_background_bright: 000000/' "$LIMINE_CONF"
 
 # Cores da paleta do terminal (preto e amarelo para tela de senha LUKS)
-sudo sed -i 's/^term_palette:.*$/term_palette: 000000;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00/' /boot/limine.conf
-sudo sed -i 's/^term_palette_bright:.*$/term_palette_bright: 000000;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00/' /boot/limine.conf
+sed -i 's/^term_palette:.*$/term_palette: 000000;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00/' "$LIMINE_CONF"
+sed -i 's/^term_palette_bright:.*$/term_palette_bright: 000000;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00/' "$LIMINE_CONF"
+
+echo "Enferrando configuração do Limine no boot (limine-enroll-config)..."
+sudo limine-enroll-config
 
 echo "Fazendo backup da imagem original e injetando a sua logo do repositório..."
 if [ ! -f "/usr/share/plymouth/themes/omarchy/logo.png.bak" ]; then
