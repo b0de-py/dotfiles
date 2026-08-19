@@ -30,6 +30,10 @@ sudo sed -i 's/term_foreground:.*/term_foreground: ffcc00/' /boot/limine.conf
 sudo sed -i 's/term_foreground_bright:.*/term_foreground_bright: ffcc00/' /boot/limine.conf
 sudo sed -i 's/term_background_bright:.*/term_background_bright: 000000/' /boot/limine.conf
 
+# Cores da paleta do terminal (preto e amarelo para tela de senha LUKS)
+sudo sed -i 's/^term_palette:.*$/term_palette: 000000;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00/' /boot/limine.conf
+sudo sed -i 's/^term_palette_bright:.*$/term_palette_bright: 000000;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00/' /boot/limine.conf
+
 echo "Fazendo backup da imagem original e injetando a sua logo do repositório..."
 if [ ! -f "/usr/share/plymouth/themes/omarchy/logo.png.bak" ]; then
     sudo cp /usr/share/plymouth/themes/omarchy/logo.png /usr/share/plymouth/themes/omarchy/logo.png.bak
