@@ -41,7 +41,10 @@ Copie os arquivos de `omarchy/hypr/` para `~/.config/hypr/`:
 
 ```bash
 cp omarchy/hypr/*.conf ~/.config/hypr/
+touch ~/.config/hypr/private.conf
 ```
+
+O `hyprland.conf` carrega `~/.config/hypr/private.conf`, onde ficam atalhos e window rules pessoais que não vão pra este repo. O `touch` só garante que o arquivo exista (não apaga um que já esteja lá).
 
 Copie o screensaver para `~/.config/omarchy/branding/`:
 
@@ -76,12 +79,11 @@ Principais diferenças em relação ao padrão do Omarchy:
 | `SUPER + A` | Abre o Walker (launcher de apps) |
 | `SUPER + Q` | Fecha a janela ativa |
 | `SUPER + SHIFT + A` | Abre Gemini no navegador |
-| `SUPER + SHIFT + V` | Abre EVDI (BB) no navegador |
 | `SUPER + B` | Abre configurações de Bluetooth |
 | `SUPER + N` | Abre mixer de áudio |
 | `SUPER + ALT + RETURN` | Abre novo terminal com tmux |
 
-> **Atenção:** as linhas marcadas com `# [personal]` referenciam serviços específicos (HEY, WhatsApp, BB EVDI). Substitua ou remova conforme seu próprio setup.
+> **Atenção:** as linhas marcadas com `# [personal]` referenciam serviços específicos deste setup. Substitua ou remova conforme o seu. Atalhos realmente pessoais ficam no `~/.config/hypr/private.conf`.
 
 ### Input (`input.conf`)
 
@@ -99,7 +101,6 @@ Window rules de opacidade para evitar transparência indesejada:
 
 - `vivaldi-stable`
 - `teams-for-linux`
-- webapp EVDI (BB)
 - webapp X (Twitter)
 
 ### Tela de bloqueio (`hyprlock.conf`)
