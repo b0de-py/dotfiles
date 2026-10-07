@@ -17,6 +17,7 @@ dotfiles/
 │       ├── input.conf            # Teclado (us intl) e touchpad
 │       ├── looknfeel.conf        # Aparência geral (rounding, gaps)
 │       └── monitors.conf         # Configuração dos monitores
+├── ai-usagebar/               # Uso do Claude/Antigravity na Waybar (config + install.sh)
 └── waybar/
     ├── config.jsonc              # Configuração da barra
     ├── style.css                 # Estilo da barra
@@ -110,3 +111,7 @@ Window rules de opacidade para evitar transparência indesejada:
 ### Waybar
 
 Veja [waybar/README.md](waybar/README.md) para documentação detalhada dos widgets.
+
+### ai-usagebar
+
+Uso do Claude e do Antigravity na Waybar. Veja [ai-usagebar/README.md](ai-usagebar/README.md) para instalar (`./ai-usagebar/install.sh`).

@@ -14,6 +14,8 @@
     "custom/screenrecording-indicator"
   ],
   "modules-right": [
+    "custom/claude",
+    "custom/antigravity",
     "group/tray-expander",
     "bluetooth",
     "network",
@@ -109,6 +111,22 @@
     "on-scroll-down": "python ~/.config/waybar/way_calendar.py 5",
     "on-click": "python ~/.config/waybar/way_calendar.py 1",
     "tooltip": true
+  },
+  "custom/claude": {
+    "exec": "ai-usagebar --vendor anthropic --icon '󰚩'",
+    "return-type": "json",
+    "interval": 300,
+    "signal": 13,
+    "tooltip": true,
+    "on-click": "ai-usagebar-tui"
+  },
+  "custom/antigravity": {
+    "exec": "ai-usagebar --vendor antigravity --icon '󰘧' --format '{session_pct}% · {session_reset}'",
+    "return-type": "json",
+    "interval": 300,
+    "signal": 13,
+    "tooltip": true,
+    "on-click": "ai-usagebar-tui"
   },
   "custom/cpu-detailed": {
     "format": "{}",

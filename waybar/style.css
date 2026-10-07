@@ -151,3 +151,9 @@ tooltip {
   margin: 0;
   padding: 0;
 }
+
+#custom-claude {
+  color: #cba6f7;
+  margin: 0 7.5px;
+  padding-right: 4px;
+}
