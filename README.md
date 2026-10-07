@@ -110,3 +110,7 @@ Window rules de opacidade para evitar transparência indesejada:
 ### Waybar
 
 Veja [waybar/README.md](waybar/README.md) para documentação detalhada dos widgets.
+
+### ai-usagebar
+
+Veja [ai-usagebar/antigravity-setup.md](ai-usagebar/antigravity-setup.md) para ligar o Antigravity no ai-usagebar e criar o módulo `custom/antigravity` na Waybar.
