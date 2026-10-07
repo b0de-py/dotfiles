@@ -1,0 +1,11 @@
+anthropic.claude-code
+bjarne.vantablack-omarchy
+chamaraabeysekara.some-yellow
+esbenp.prettier-vscode
+fnando.linter
+ms-azuretools.vscode-containers
+ms-vscode-remote.remote-containers
+redhat.vscode-yaml
+tahayvr.matteblack
+usernamehw.errorlens
+vnelabs.mdviewer
