@@ -18,6 +18,11 @@ dotfiles/
 │       ├── looknfeel.conf        # Aparência geral (rounding, gaps)
 │       └── monitors.conf         # Configuração dos monitores
 ├── ai-usagebar/               # Uso do Claude/Antigravity na Waybar (config + install.sh)
+├── vscode/
+│   ├── settings.json             # Settings do usuário do VS Code (YAML, Error Lens, tema)
+│   └── extensions.txt            # Extensões instaladas
+├── yamllint/
+│   └── config                    # Config global do yamllint (~/.config/yamllint/config)
 └── waybar/
     ├── config.jsonc              # Configuração da barra
     ├── style.css                 # Estilo da barra
@@ -69,6 +74,16 @@ Reinicie o waybar:
 pkill waybar && waybar &
 ```
 
+### VS Code + YAML
+
+Pré-requisito: `yamllint` instalado (`yay -S yamllint` ou `pip install yamllint`).
+
+```bash
+xargs -L1 code --install-extension < vscode/extensions.txt
+cp vscode/settings.json ~/.config/Code/User/settings.json
+mkdir -p ~/.config/yamllint && cp yamllint/config ~/.config/yamllint/config
+```
+
 ## Detalhes das customizações
 
 ### Atalhos (`bindings.conf`)
@@ -115,3 +130,24 @@ Veja [waybar/README.md](waybar/README.md) para documentação detalhada dos widg
 ### ai-usagebar
 
 Uso do Claude e do Antigravity na Waybar. Veja [ai-usagebar/README.md](ai-usagebar/README.md) para instalar (`./ai-usagebar/install.sh`).
+
+### VS Code + YAML
+
+Cada peça tem um papel:
+
+| Peça | Papel |
+|---|---|
+| **Error Lens** (`usernamehw.errorlens`) | Só exibe os diagnósticos inline no código (erro em vermelho, warning em amarelo) |
+| **YAML** (`redhat.vscode-yaml`) | Valida sintaxe/schema e formata o arquivo ao salvar |
+| **Linter** (`fnando.linter`) | Roda o `yamllint` enquanto você digita |
+| **yamllint** (CLI) | Regras de estilo. Usa o `.yamllint` do projeto ou, se não houver, `~/.config/yamllint/config` |
+
+Config global do yamllint (`yamllint/config`), compatível com o ansible-lint:
+
+- `line-length`: máximo 120, como **warning**
+- `truthy` (`yes`/`no` em vez de `true`/`false`): **warning**
+- `document-start` (`---` no topo) desligado
+
+Ao salvar um YAML, o VS Code formata o recuo, adiciona a linha final e remove espaços sobrando. YAML **inválido** (ex.: item de lista com recuo errado) não é formatado: o erro aparece em vermelho e precisa ser corrigido na mão. Para salvar sem formatar: `Ctrl+K Ctrl+Shift+S`.
+
+> A extensão `yamllint-fix` foi substituída pela `Linter` porque só roda se existir um `.yamllint` na raiz do projeto.
