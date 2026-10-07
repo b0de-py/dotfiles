@@ -32,9 +32,9 @@ Edit `~/.config/waybar/weather_config.json`:
 ```json
 {
   "location": {
-    "name": "Guará, DF",                    // Display name
-    "latitude": "-15.82",                   // Latitude
-    "longitude": "-47.98",                  // Longitude  
+    "name": "São Paulo, SP",                 // Display name
+    "latitude": "-23.55",                   // Latitude
+    "longitude": "-46.63",                  // Longitude  
     "timezone": "America/Sao_Paulo"          // Timezone
   },
   "units": {

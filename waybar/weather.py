@@ -23,9 +23,9 @@ CACHE_FILE = "/tmp/waybar_weather_cache"
 # Default configuration
 DEFAULT_CONFIG = {
     "location": {
-        "name": "Guará, DF",
-        "latitude": "-15.82",
-        "longitude": "-47.98",
+        "name": "São Paulo, SP",
+        "latitude": "-23.55",
+        "longitude": "-46.63",
         "timezone": "America/Sao_Paulo",
     },
     "units": {
