@@ -51,7 +51,7 @@ Instead of three separate, independent scripts, we've built a **unified ecosyste
 
 **Files:**
 - `weather.py` - Main script
-- `weather_config.json` - Configuration
+- `weather_config.json` - Configuration (not versioned: created with defaults on first run, or installed from a private repo)
 
 ---
 

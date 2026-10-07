@@ -32,7 +32,7 @@ Edit `~/.config/waybar/weather_config.json`:
 ```json
 {
   "location": {
-    "name": "São Paulo, SP",                    // Display name
+    "name": "São Paulo, SP",                 // Display name
     "latitude": "-23.55",                   // Latitude
     "longitude": "-46.63",                  // Longitude  
     "timezone": "America/Sao_Paulo"          // Timezone
