@@ -1,0 +1,33 @@
+# ai-usagebar (https://github.com/akitaonrails/ai-usagebar)
+# Instalado em ~/.config/ai-usagebar/config.toml pelo install.sh desta pasta.
+# Exemplo completo com todas as opções: /usr/share/ai-usagebar/config.example.toml
+
+[ui]
+# Provedor mostrado por padrão no ai-usagebar-tui
+primary = "anthropic"
+
+[notifications]
+enabled = true
+threshold = 97
+
+# Claude: usa o login OAuth do Claude Code (~/.claude/.credentials.json).
+# Num PC novo, basta rodar `claude` uma vez e fazer login.
+[anthropic]
+enabled = true
+
+# Desligados até ter login ou API key nesta máquina
+[openai]
+enabled = false
+
+[zai]
+enabled = false
+
+[openrouter]
+enabled = false
+
+[copilot]
+enabled = false
+
+# Google Antigravity: detecta o servidor local do app. Veja antigravity-setup.md.
+[antigravity]
+enabled = true

@@ -17,6 +17,7 @@ dotfiles/
 │       ├── input.conf            # Teclado (us intl) e touchpad
 │       ├── looknfeel.conf        # Aparência geral (rounding, gaps)
 │       └── monitors.conf         # Configuração dos monitores
+├── ai-usagebar/               # Uso do Claude/Antigravity na Waybar (config + install.sh)
 └── waybar/
     ├── config.jsonc              # Configuração da barra
     ├── style.css                 # Estilo da barra
@@ -113,4 +114,4 @@ Veja [waybar/README.md](waybar/README.md) para documentação detalhada dos widg
 
 ### ai-usagebar
 
-Veja [ai-usagebar/antigravity-setup.md](ai-usagebar/antigravity-setup.md) para ligar o Antigravity no ai-usagebar e criar o módulo `custom/antigravity` na Waybar.
+Uso do Claude e do Antigravity na Waybar. Veja [ai-usagebar/README.md](ai-usagebar/README.md) para instalar (`./ai-usagebar/install.sh`).
