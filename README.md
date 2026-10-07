@@ -41,7 +41,10 @@ Copie os arquivos de `omarchy/hypr/` para `~/.config/hypr/`:
 
 ```bash
 cp omarchy/hypr/*.conf ~/.config/hypr/
+touch ~/.config/hypr/private.conf
 ```
+
+O `hyprland.conf` carrega `~/.config/hypr/private.conf`, onde ficam atalhos e window rules pessoais que não vão pra este repo. O `touch` só garante que o arquivo exista (não apaga um que já esteja lá).
 
 Copie o screensaver para `~/.config/omarchy/branding/`:
 
@@ -80,7 +83,7 @@ Principais diferenças em relação ao padrão do Omarchy:
 | `SUPER + N` | Abre mixer de áudio |
 | `SUPER + ALT + RETURN` | Abre novo terminal com tmux |
 
-> **Atenção:** as linhas marcadas com `# [personal]` referenciam serviços específicos (serviços pessoais). Substitua ou remova conforme seu próprio setup.
+> **Atenção:** as linhas marcadas com `# [personal]` referenciam serviços específicos deste setup. Substitua ou remova conforme o seu. Atalhos realmente pessoais ficam no `~/.config/hypr/private.conf`.
 
 ### Input (`input.conf`)
 
