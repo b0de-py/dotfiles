@@ -89,8 +89,7 @@
     "format": "{}",
     "tooltip": true,
     "interval": 1800,
-    // Use o caminho completo (/home/seu_usuario/...)
-    "exec": "/usr/bin/python /home/fnzs/.config/waybar/weather.py",
+    "exec": "python ~/.config/waybar/weather.py",
     "return-type": "json"
   },
   "custom/update": {
@@ -114,7 +113,7 @@
   "custom/cpu-detailed": {
     "format": "{}",
     "tooltip": true,
-    "exec": "python3 /home/fnzs/.config/waybar/cpu-detailed.py",
+    "exec": "python3 ~/.config/waybar/cpu-detailed.py",
     "return-type": "json",
     //"interval": 2
   },

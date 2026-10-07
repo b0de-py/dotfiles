@@ -51,7 +51,7 @@ Add to your `config.jsonc`:
   "custom/cpu-detailed": {
     "format": "{}",
     "tooltip": true,
-    "exec": "python3 /home/fnzs/.config/waybar/cpu-detailed.py",
+    "exec": "python3 ~/.config/waybar/cpu-detailed.py",
     "return-type": "json"
   }
 }
