@@ -89,8 +89,7 @@
     "format": "{}",
     "tooltip": true,
     "interval": 1800,
-    // Use o caminho completo (/home/seu_usuario/...)
-    "exec": "/usr/bin/python ~/.config/waybar/weather.py",
+    "exec": "python ~/.config/waybar/weather.py",
     "return-type": "json"
   },
   "custom/update": {
