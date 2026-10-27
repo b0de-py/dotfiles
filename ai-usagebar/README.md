@@ -1,6 +1,6 @@
 # ai-usagebar
 
-Uso do Claude (e do Google Antigravity) na Waybar, com o [ai-usagebar](https://github.com/akitaonrails/ai-usagebar).
+Uso do Claude (e do Google Antigravity) na barra do shell do Omarchy, com o [ai-usagebar](https://github.com/akitaonrails/ai-usagebar).
 
 ```
 ai-usagebar/
@@ -25,9 +25,14 @@ ai-usagebar/
 
    Ele roda `yay -S --needed ai-usagebar-bin` se o `ai-usagebar` não estiver instalado e copia o `config.toml` para `~/.config/ai-usagebar/` (permissão 600). Se a config já existir, não é sobrescrita.
 
-3. A Waybar já vem pronta no `waybar/config.jsonc` deste repo: os módulos `custom/claude` e `custom/antigravity` ficam no começo do `modules-right`, e o `#custom-claude` está no `waybar/style.css`. Os dois usam `"signal": 13` e abrem o `ai-usagebar-tui` no clique.
+3. A barra já vem pronta no `omarchy/shell.json` deste repo: o módulo `ai-usage` (`omarchy/bar/modules/ai-usage.qml`, copiado para `~/.config/omarchy/bar/modules/`) fica antes do tray, no lado direito.
 
-   Se o repo privado de automações estiver instalado, o `group/habits` entra antes do `custom/claude`.
+   - Fechado, mostra só o Claude (`‹ 󰚩 27% · 0h 12m`: uso da sessão e tempo até renovar).
+   - Com o mouse em cima, a gaveta abre e mostra o Antigravity, empurrando o resto da barra para o lado.
+   - Fica destacado quando o uso passa para `high`/`critical`; o clique abre o `ai-usagebar-tui`.
+   - Atualiza a cada 300 s (`interval` no `shell.json`, mínimo de 30 s).
+
+   Se o repo privado de automações estiver instalado, o `habit-tracker` entra antes do `ai-usage`.
 
 ## Antigravity
 
