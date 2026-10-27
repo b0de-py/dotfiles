@@ -44,6 +44,8 @@ The CPU Detailed Monitor is a comprehensive system monitoring widget for Waybar 
 
 ## Waybar Configuration
 
+> **Omarchy Quattro:** the bar now runs `cpu-detailed.py --once` from `~/.config/omarchy/shell.json`, with colors per class via `colored-command.qml`. See [README.md](README.md#2-bar-integration-omarchy-shell). The Waybar config below is kept for reference.
+
 Add to your `config.jsonc`:
 
 ```json

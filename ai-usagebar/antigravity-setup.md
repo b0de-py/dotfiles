@@ -1,5 +1,7 @@
 # Configuração do Antigravity no ai-usagebar e Waybar
 
+> **Omarchy Quattro:** a Waybar saiu. O passo 1 (ligar o Antigravity no `config.toml`) continua valendo; os passos 2 e 3 ficaram como histórico. Hoje o Antigravity aparece na gaveta do módulo `ai-usage.qml` (veja o [README](README.md)).
+
 Este documento registra os passos tomados para habilitar o rastreamento de uso do Google Antigravity na barra de status (Waybar), utilizando o `ai-usagebar`.
 
 ## 1. Habilitando o provedor no ai-usagebar

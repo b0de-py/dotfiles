@@ -1,6 +1,8 @@
 # Waybar Enhanced Scripts Collection
 
-This collection contains three enterprise-grade waybar scripts with unified logging, configuration systems, and advanced features.
+This collection contains the bar scripts (calendar, weather and CPU) with unified logging, configuration systems, and advanced features.
+
+> **Omarchy Quattro:** the Waybar is gone. These scripts still live in `~/.config/waybar/`, but they are now run by the Omarchy shell bar, declared in `~/.config/omarchy/shell.json` (see [Bar Integration](#2-bar-integration-omarchy-shell)). The media widget is the built-in `omarchy.media`, so `mediaplayer.py` was removed.
 
 ## 🎯 Overview
 
@@ -55,22 +57,17 @@ Instead of three separate, independent scripts, we've built a **unified ecosyste
 
 ---
 
-### 🎵 **Media Player Widget** (`mediaplayer.py`)
+### 🖥️ **CPU Widget** (`cpu-detailed.py`)
 **Core Features:**
-- Multi-player support with smart prioritization
-- Real-time volume monitoring and display
-- Click actions (play/pause/next/prev)
-- Custom icons and formatting
+- CPU usage, temperature and power in the bar
+- Per-core breakdown in the tooltip
+- `--once` mode: prints a single sample and exits (used by the Omarchy shell, which polls)
 
-**Advanced Features:**
-- Player preference system with priority ordering
-- Graceful process restart on failure
-- Dynamic volume icons based on level
-- Comprehensive tooltip with status details
+**Color classes** (`good`/`medium`/`warning`/`critical`): the `colored-command.qml` module maps each class to a color set in `shell.json`.
 
 **Files:**
-- `mediaplayer.py` - Main script
-- `mediaplayer_config.json` - Configuration
+- `cpu-detailed.py` - Main script
+- `CPU_MONITOR_README.md` - Detailed docs
 
 ---
 
@@ -154,11 +151,9 @@ print(json.dumps(output))
 - Maintains exact spacing regardless of content
 - Pango HTML for waybar compatibility
 
-### **Robust Process Management (MediaPlayer)**
-- Automatic playerctl process restart on failure
-- Signal handling for graceful shutdown
-- Multi-player state tracking and prioritization
-- Real-time volume monitoring with intelligent icons
+### **Temperature Classes (Weather)**
+- `frio` (≤ 15 °C), `ameno` (≤ 25 °C), `quente` (≤ 30 °C), `muito-quente` (≤ 34 °C), `extremo` (above)
+- The bar colors the text by class (blue, green, yellow, orange, red)
 
 ### **Unified Error Handling**
 ```python
@@ -174,7 +169,7 @@ except Exception as e:
 
 **Code Metrics:**
 - **Total Scripts**: 3 main scripts + 1 logging module
-- **Configuration Files**: 4 JSON configs
+- **Configuration Files**: 3 JSON configs
 - **Lines of Code**: ~800+ lines across all scripts
 - **Error Handling**: 100% coverage with graceful fallbacks
 - **Test Coverage**: Production-hardened with real-world usage
@@ -182,7 +177,7 @@ except Exception as e:
 **Features Count:**
 - Calendar: Timezone, Events, Click Nav, Alignment ✅
 - Weather: Caching, Units, Alerts, AQI ✅  
-- MediaPlayer: Volume, Click Actions, Prioritization ✅
+- CPU: Per-core Tooltip, Temperature, Color Classes ✅
 - System: Unified Logging, Performance Tracking, Config Management ✅
 
 ## 🔧 **Installation & Setup**
@@ -193,51 +188,49 @@ except Exception as e:
 ├── way_calendar.py              # Calendar script
 ├── calendar_config.json         # Calendar config
 ├── calendar_events.txt          # Events database
-├── weather.py                  # Weather script  
+├── weather.py                   # Weather script
 ├── weather_config.json          # Weather config
-├── mediaplayer.py              # Media player script
-├── mediaplayer_config.json     # Media player config
-├── waybar_logging.py           # Logging system
-├── logging_config.json          # Logging configuration
-├── config.jsonc                # Waybar configuration
-└── style.css                   # Waybar styling
+├── cpu-detailed.py              # CPU script
+├── waybar_logging.py            # Logging system
+└── logging_config.json          # Logging configuration
 ```
 
-### **2. Waybar Integration**
+### **2. Bar Integration (Omarchy shell)**
+Entries in `~/.config/omarchy/shell.json` (`bar.layout.<section>`). Command modules show plain text, so the calendar output has its Pango tags stripped; weather and CPU go through `colored-command.qml` to get colors per class:
 ```json
 {
-  "custom/calendar": {
-    "format": "󰃭 {}",
-    "exec": "python ~/.config/waybar/way_calendar.py",
-    "return-type": "json",
-    "on-scroll-up": "python ~/.config/waybar/way_calendar.py 4",
-    "on-scroll-down": "python ~/.config/waybar/way_calendar.py 5",
-    "on-click": "python ~/.config/waybar/way_calendar.py 1"
-  },
-  "custom/weather": {
-    "format": "{}",
-    "exec": "python ~/.config/waybar/weather.py",
-    "return-type": "json",
-    "on-click": "python ~/.config/waybar/weather.py --refresh"
-  },
-  "custom/media": {
-    "format": "{}",
-    "exec": "python ~/.config/waybar/mediaplayer.py",
-    "return-type": "json",
-    "on-click": "python ~/.config/waybar/mediaplayer.py play_pause",
-    "on-scroll-up": "python ~/.config/waybar/mediaplayer.py next",
-    "on-scroll-down": "python ~/.config/waybar/mediaplayer.py previous"
-  }
+  "id": "calendar",
+  "type": "command",
+  "exec": "/usr/bin/python3 ~/.config/waybar/way_calendar.py | sed -E 's/<[^>]+>//g'",
+  "interval": 60,
+  "onClick": "/usr/bin/python3 ~/.config/waybar/way_calendar.py 1"
+},
+{
+  "id": "weather",
+  "type": "qml",
+  "source": "~/.config/omarchy/bar/modules/colored-command.qml",
+  "exec": "/usr/bin/python3 ~/.config/waybar/weather.py",
+  "interval": 1800,
+  "colors": { "frio": "#89dceb", "ameno": "#a6e3a1", "quente": "#f9e2af", "muito-quente": "#fab387", "extremo": "#f38ba8" }
+},
+{
+  "id": "cpu-detailed",
+  "type": "qml",
+  "source": "~/.config/omarchy/bar/modules/colored-command.qml",
+  "exec": "/usr/bin/python3 ~/.config/waybar/cpu-detailed.py --once",
+  "interval": 3,
+  "bold": true,
+  "onClick": "omarchy-launch-or-focus-tui btop",
+  "colors": { "good": "#89b4fa", "medium": "#f9e2af", "warning": "#fab387", "critical": "#f38ba8" }
 }
 ```
+
+The shell only polls (no scroll actions or signals), so the calendar scroll navigation from the Waybar days is not wired up.
 
 ### **3. Dependencies**
 ```bash
 # Python packages
 pip3 install pytz  # For calendar timezone support
-
-# System requirements
-sudo apt install playerctl  # For media player control
 ```
 
 ## 🎯 **Design Philosophy**
@@ -265,7 +258,6 @@ tail -f ~/.config/waybar/waybar.log
 # View script-specific debug logs
 tail -f ~/.config/waybar/calendar.debug.log
 tail -f ~/.config/waybar/weather.debug.log
-tail -f ~/.config/waybar/mediaplayer.debug.log
 ```
 
 ### **Performance Monitoring**
@@ -273,7 +265,6 @@ Logs include performance metrics like:
 ```
 [INFO] [weather] PERF weather_api_call: 0.234s
 [INFO] [calendar] PERF calendar_html_generation: 0.001s
-[INFO] [mediaplayer] PERF format_output: 0.000s
 ```
 
 ### **Configuration Validation**
