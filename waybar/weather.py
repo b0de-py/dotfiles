@@ -97,6 +97,19 @@ def cache_data(data):
         pass
 
 
+def temperature_class(temp_celsius):
+    """Faixa de temperatura (em °C) usada pela barra para colorir o texto"""
+    if temp_celsius <= 15:
+        return "frio"
+    if temp_celsius <= 25:
+        return "ameno"
+    if temp_celsius <= 30:
+        return "quente"
+    if temp_celsius <= 34:
+        return "muito-quente"
+    return "extremo"
+
+
 def convert_temperature(temp_celsius, unit):
     """Convert temperature based on unit"""
     if unit.lower() == "fahrenheit":
@@ -305,7 +318,11 @@ def format_weather_data(config):
 
         tooltip_text = "\n".join(tooltip_parts)
 
-        output = {"text": text, "tooltip": tooltip_text, "class": "weather-widget"}
+        output = {
+            "text": text,
+            "tooltip": tooltip_text,
+            "class": ["weather-widget", temperature_class(temp_c)],
+        }
 
         return json.dumps(output)
 

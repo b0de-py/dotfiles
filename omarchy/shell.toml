@@ -1,0 +1,5 @@
+# Overrides de máquina do shell do Omarchy (ganham do shell.toml do tema).
+
+[font]
+# Fonte 1px menor que o padrão (12); ícones e a altura da barra acompanham.
+base-size = 11

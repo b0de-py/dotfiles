@@ -202,6 +202,14 @@ def main():
 
     monitor = CPUMonitor()
 
+    # --once: print a single reading and exit (for polling bars like the
+    # Omarchy shell). The first sample has no delta, so take two.
+    if "--once" in sys.argv:
+        monitor.get_output()
+        time.sleep(1)
+        print(json.dumps(monitor.get_output()), flush=True)
+        return
+
     while True:
 
         print(json.dumps(monitor.get_output()), flush=True)
