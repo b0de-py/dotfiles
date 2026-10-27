@@ -1,0 +1,49 @@
+{
+  "workbench.colorTheme": "Matte Black",
+  "update.mode": "none",
+  "claudeCode.preferredLocation": "panel",
+  "explorer.confirmDelete": false,
+
+  // Error Lens: mostra os diagnósticos inline no código
+  "errorLens.enabledDiagnosticLevels": ["error", "warning", "info"],
+  "errorLens.alignMessage": {
+    "start": 0,
+    "end": 0,
+    "minimumMargin": 4,
+    "padding": [0, 0],
+    "useFixedPosition": true
+  },
+
+  // Warning em amarelo (o padrão do Error Lens é laranja e se confunde com erro)
+  "workbench.colorCustomizations": {
+    "editorWarning.foreground": "#e5c07b",
+    "errorLens.warningForeground": "#e5c07b",
+    "errorLens.warningBackground": "#e5c07b14",
+    "errorLens.warningMessageBackground": "#e5c07b12",
+    "errorLens.warningRangeBackground": "#e5c07b12",
+    "errorLens.statusBarWarningForeground": "#e5c07b",
+    "errorLens.statusBarIconWarningForeground": "#e5c07b"
+  },
+
+  // YAML (Red Hat): validação de sintaxe/schema + formatação
+  "yaml.validate": true,
+  "yaml.format.enable": true,
+  "yaml.format.printWidth": 120,
+  "yaml.format.singleQuote": false,
+  "yaml.format.bracketSpacing": true,
+
+  // Linter (fnando.linter) roda o yamllint, que usa o .yamllint do projeto
+  // ou, na falta dele, ~/.config/yamllint/config
+  "linter.enabled": true,
+
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.formatOnSave": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.rulers": [120]
+  }
+}

@@ -1,0 +1,33 @@
+---
+# Config global do yamllint (~/.config/yamllint/config).
+# Vale para qualquer projeto sem .yamllint próprio.
+# Base "default" + ajustes compatíveis com o ansible-lint.
+extends: default
+
+rules:
+  # Linhas longas aparecem como warning, não como error
+  # (expressões Jinja e URLs estouram 80 colunas fácil).
+  line-length:
+    max: 120
+    level: warning
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+
+  # yes/no/True vira warning (ansible-lint também só aceita true/false).
+  # check-keys: false evita falso positivo em "on:" do GitHub Actions.
+  truthy:
+    check-keys: false
+    level: warning
+
+  # Exigido pelo ansible-lint.
+  comments:
+    min-spaces-from-content: 1
+  comments-indentation: false
+  braces:
+    max-spaces-inside: 1
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
+
+  # Não obrigar "---" no topo.
+  document-start: disable

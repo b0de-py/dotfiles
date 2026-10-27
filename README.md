@@ -25,6 +25,11 @@ dotfiles/
 ├── fastfetch/                    # Configs compactas do fastfetch (janelas menores)
 ├── fcitx5/profile                # Layout de teclado us-intl no fcitx5
 ├── ai-usagebar/                  # Uso do Claude/Antigravity (config + install.sh)
+├── vscode/
+│   ├── settings.json             # Settings do usuário do VS Code (YAML, Error Lens, tema)
+│   └── extensions.txt            # Extensões instaladas
+├── yamllint/
+│   └── config                    # Config global do yamllint (~/.config/yamllint/config)
 └── waybar/                       # Scripts da barra (calendário, clima, CPU)
 ```
 
@@ -179,6 +184,16 @@ alias reload-bar='omarchy restart shell'
 - Se um `install.sh` acrescentar algo depois do `ble-attach`, não tem problema: no ble.sh 0.4 o attach só acontece depois que o `.bashrc` termina. Mas o certo é manter o `ble-attach` como última linha.
 - Num PC que veio do Omarchy 3, pegue os `source` dos projetos e as linhas do cargo e do nvm no `~/.bashrc.omarchy-upgrade-to-quattro.*.bak`. Não copie o `.bak` inteiro: ele aponta para o `~/.local/share/omarchy`, que não existe mais.
 
+### VS Code + YAML
+
+Pré-requisito: `yamllint` instalado (`omarchy pkg add yamllint`; está no repositório `extra`).
+
+```bash
+xargs -L1 code --install-extension < vscode/extensions.txt
+cp vscode/settings.json ~/.config/Code/User/settings.json
+mkdir -p ~/.config/yamllint && cp yamllint/config ~/.config/yamllint/config
+```
+
 ### Navegador padrão (Vivaldi)
 
 O upgrade para o Quattro volta o navegador padrão para o Chromium, e o `omarchy default browser` não lista o Vivaldi. Defina direto pelo XDG:
@@ -241,3 +256,24 @@ Veja [waybar/README.md](waybar/README.md) para os scripts de calendário, clima 
 ### ai-usagebar
 
 Uso do Claude e do Antigravity na barra. Veja [ai-usagebar/README.md](ai-usagebar/README.md) para instalar (`./ai-usagebar/install.sh`).
+
+### VS Code + YAML
+
+Cada peça tem um papel:
+
+| Peça | Papel |
+|---|---|
+| **Error Lens** (`usernamehw.errorlens`) | Só exibe os diagnósticos inline no código (erro em vermelho, warning em amarelo) |
+| **YAML** (`redhat.vscode-yaml`) | Valida sintaxe/schema e formata o arquivo ao salvar |
+| **Linter** (`fnando.linter`) | Roda o `yamllint` enquanto você digita |
+| **yamllint** (CLI) | Regras de estilo. Usa o `.yamllint` do projeto ou, se não houver, `~/.config/yamllint/config` |
+
+Config global do yamllint (`yamllint/config`), compatível com o ansible-lint:
+
+- `line-length`: máximo 120, como **warning**
+- `truthy` (`yes`/`no` em vez de `true`/`false`): **warning**
+- `document-start` (`---` no topo) desligado
+
+Ao salvar um YAML, o VS Code formata o recuo, adiciona a linha final e remove espaços sobrando. YAML **inválido** (ex.: item de lista com recuo errado) não é formatado: o erro aparece em vermelho e precisa ser corrigido na mão. Para salvar sem formatar: `Ctrl+K Ctrl+Shift+S`.
+
+> A extensão `yamllint-fix` foi substituída pela `Linter` porque só roda se existir um `.yamllint` na raiz do projeto.
