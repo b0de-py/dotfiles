@@ -28,13 +28,55 @@ dotfiles/
 └── waybar/                       # Scripts da barra (calendário, clima, CPU)
 ```
 
+## Atualizando um PC do Omarchy 3 para o Quattro
+
+O upgrade para o Quattro (4.x) troca muita coisa de lugar. Antes de começar, saiba o que ele faz com a config antiga:
+
+| O que | O que acontece | Como volta |
+|---|---|---|
+| `~/.config/hypr/*.conf` | continuam lá, mas são ignorados (o Hyprland agora lê `*.lua`) | [Hyprland](#hyprland) |
+| `~/.config/waybar/` | movida para `~/.config/waybar.omarchy-upgrade-to-quattro.<data>.bak` (a Waybar saiu) | [Barra](#barra-shell-do-omarchy); o `calendar_events.txt` vem do `.bak` |
+| `~/.local/share/omarchy/` | movida para `.bak`; o Omarchy agora mora em `/usr/share/omarchy` | o `.bashrc` novo já aponta para lá |
+| `~/.bashrc` | reescrito pelo padrão do Omarchy (backup em `~/.bashrc.omarchy-upgrade-to-quattro.<data>.bak`) | [`.bashrc`](#bashrc) |
+| `~/.config/mimeapps.list` | navegador padrão volta para o Chromium | [Navegador padrão](#navegador-padrão-vivaldi) |
+| `~/.config/xdg-terminals.list` | apagado (era o ghostty); o padrão vira o **foot** | nada: a logo em imagem do terminal só funciona no foot |
+| `~/.config/walker`, `mako`, `swayosd` | movidos para `.bak`; o shell do Omarchy faz o papel deles | nada |
+| tema de boot (Plymouth/SDDM/Limine) | volta para a logo do Omarchy | [omarchy-theme](omarchy-theme/README.md) |
+| layout do teclado | o fcitx5 sobe com `us` sem acentos | [Teclado](#teclado-fcitx5) |
+
+Os `.bak` ficam na máquina; nada é apagado. Na ordem:
+
+1. `omarchy update` até chegar no Quattro e reinicie.
+2. Atualize os repos: `git -C ~/codes/github/dotfiles pull` e `git -C ~/codes/github/automations pull`.
+3. Instale os [pacotes](#pacotes).
+4. Aplique cada seção de [Como aplicar](#como-aplicar-em-uma-nova-máquina), de cima para baixo.
+5. Recupere os eventos do calendário, que não são versionados:
+
+   ```bash
+   cp ~/.config/waybar.omarchy-upgrade-to-quattro.*.bak/calendar_events.txt ~/.config/waybar/
+   ```
+
+6. Siga o README do [automations](https://github.com/b0de-py/automations) (repo privado) para a parte pessoal: atalhos do trabalho, clima de casa, hábitos e timers.
+7. Reinicie para ver o boot e o login com a logo B0DE.
+
 ## Como aplicar em uma nova máquina
 
 ### Pré-requisitos
 
 - [Omarchy](https://omarchy.org) Quattro instalado
-- Dependências Python dos scripts da barra: `pip install pytz`
-- `imagemagick` para empilhar a logo no terminal (já vem no Omarchy)
+- Repo clonado em `~/codes/github/dotfiles` (o `.bashrc` e o hook do boot usam esse caminho)
+
+### Pacotes
+
+```bash
+omarchy pkg add vivaldi typora python-pytz
+omarchy pkg aur add blesh-git
+```
+
+- `python-pytz`: timezone do calendário da barra. Não use `pip install pytz`: no Arch o pip do sistema é bloqueado, e os scripts rodam com o `/usr/bin/python3`.
+- `blesh-git` (ble.sh 0.4): autocomplete do bash. O pacote `blesh` (0.3.4) é antigo para o bash 5.3 e de vez em quando solta `value too great for base` no terminal.
+- `imagemagick` (empilha a logo no terminal) e `foot` já vêm no Omarchy.
+- O `ai-usagebar` é instalado pelo [`ai-usagebar/install.sh`](ai-usagebar/README.md).
 
 ### Hyprland
 
@@ -84,21 +126,58 @@ cp omarchy/branding/* ~/.config/omarchy/branding/
 cp fastfetch/*.jsonc ~/.config/fastfetch/
 ```
 
-O `~/.bashrc` do Quattro carrega o rc do Omarchy de `/usr/share/omarchy`. Troque a chamada do `fastfetch` pela da logo:
+Quem chama a logo ao abrir o terminal é o `ff_logo`, no [`.bashrc`](#bashrc).
+
+Para o boot, o login e o hook que mantém tudo depois dos updates, veja [omarchy-theme/README.md](omarchy-theme/README.md).
+
+A logo em imagem (sixel) só aparece no **foot**, o terminal padrão do Quattro. Em outro terminal, o `ff_logo` mostra o fastfetch normal, com a arte ASCII do `about.txt`.
+
+### `.bashrc`
+
+O `.bashrc` não é versionado inteiro: os outros projetos (automations/ai-tools, r4ul-website, shoppee_orders...) acrescentam o próprio `source` no fim pelo `install.sh` de cada um, e os instaladores do cargo e do nvm também. A base fica assim:
 
 ```bash
-source "${OMARCHY_PATH:-/usr/share/omarchy}/default/bash/rc"
+# 0. Ambiente do Omarchy (OMARCHY_PATH + PATH), necessário até em shells não interativos
+[[ -r /usr/share/omarchy/default/bash/env-bootstrap ]] && source /usr/share/omarchy/default/bash/env-bootstrap
 
+# 1. Gatekeeper: Se não for interativo, não faz nada.
+[[ $- != *i* ]] && return
+
+# 2. ble.sh (autocomplete) carregado antes do rc do Omarchy, para o starship
+#    detectar o ble e usar os hooks dele; o ble-attach fica no fim do arquivo.
+if [ -f /usr/share/blesh/ble.sh ]; then
+    source /usr/share/blesh/ble.sh --noattach
+
+    # Silencia apenas as reclamações básicas para não sujar o terminal
+    ble-bind -f 'emacs-editing-mode' 'nop' 2>/dev/null
+    ble-bind -f 'vi-editing-mode' 'nop' 2>/dev/null
+fi
+
+# 3. Carrega as funções e o visual padrão do Omarchy (no Quattro mora em /usr/share/omarchy)
+if [ -f "${OMARCHY_PATH:-/usr/share/omarchy}/default/bash/rc" ]; then
+    source "${OMARCHY_PATH:-/usr/share/omarchy}/default/bash/rc"
+fi
+
+# fastfetch com a logo-bode.png (b0de-py/dotfiles/bash/ff-logo.sh)
 if [[ -f ~/codes/github/dotfiles/bash/ff-logo.sh ]]; then
     source ~/codes/github/dotfiles/bash/ff-logo.sh && ff_logo
 else
     fastfetch
 fi
 
+## Aliases
+
 alias reload-bar='omarchy restart shell'
+
+# ... linhas acrescentadas pelos install.sh dos outros projetos ...
+
+# ble.sh: tem que ser a última coisa do .bashrc
+[[ ${BLE_VERSION-} ]] && ble-attach
 ```
 
-Para o boot, o login e o hook que mantém tudo depois dos updates, veja [omarchy-theme/README.md](omarchy-theme/README.md).
+- O ble.sh tem que vir **antes** do rc do Omarchy: é o rc que inicializa o starship, e o starship só se conecta ao ble se ele já estiver carregado.
+- Se um `install.sh` acrescentar algo depois do `ble-attach`, não tem problema: no ble.sh 0.4 o attach só acontece depois que o `.bashrc` termina. Mas o certo é manter o `ble-attach` como última linha.
+- Num PC que veio do Omarchy 3, pegue os `source` dos projetos e as linhas do cargo e do nvm no `~/.bashrc.omarchy-upgrade-to-quattro.*.bak`. Não copie o `.bak` inteiro: ele aponta para o `~/.local/share/omarchy`, que não existe mais.
 
 ### Navegador padrão (Vivaldi)
 

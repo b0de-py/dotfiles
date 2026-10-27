@@ -230,7 +230,7 @@ The shell only polls (no scroll actions or signals), so the calendar scroll navi
 ### **3. Dependencies**
 ```bash
 # Python packages
-pip3 install pytz  # For calendar timezone support
+sudo pacman -S --needed python-pytz  # For calendar timezone support (pip is blocked on Arch)
 ```
 
 ## 🎯 **Design Philosophy**
