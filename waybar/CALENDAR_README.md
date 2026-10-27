@@ -72,7 +72,7 @@ Add to your `waybar/config.jsonc`:
 
 Install required Python package:
 ```bash
-pip3 install pytz
+sudo pacman -S --needed python-pytz
 ```
 
 ## Usage

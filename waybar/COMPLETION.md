@@ -7,7 +7,7 @@
 **🎯 Main Scripts (100% Complete):**
 - ✅ `way_calendar.py` - Calendar with timezone, events, click navigation
 - ✅ `weather.py` - Weather with caching, alerts, AQI, units
-- ✅ `mediaplayer.py` - Media player with volume, click actions, prioritization
+- ✅ `cpu-detailed.py` - CPU usage, temperature and per-core tooltip
 
 **🔧 System Files (100% Complete):**
 - ✅ `waybar_logging.py` - Unified logging system
@@ -17,17 +17,15 @@
 **⚙️ Configuration Files (100% Complete):**
 - ✅ `calendar_config.json` - Calendar settings
 - ✅ `weather_config.json` - Weather settings  
-- ✅ `mediaplayer_config.json` - Media player settings
 
-**🎨 Waybar Integration (100% Complete):**
-- ✅ `config.jsonc` - Waybar configuration with click actions
-- ✅ `style.css` - Waybar styling with monospace tooltip support
+**🎨 Bar Integration (100% Complete):**
+- ✅ Omarchy shell (Quattro): modules in `omarchy/shell.json`, colors via `omarchy/bar/modules/colored-command.qml`
 
 **📚 Documentation (100% Complete):**
 - ✅ `README.md` - Complete system overview
 - ✅ `CALENDAR_README.md` - Calendar specific docs
 - ✅ `WEATHER_README.md` - Weather specific docs
-- ✅ `MEDIAPLAYER_README.md` - Media player specific docs
+- ✅ `CPU_MONITOR_README.md` - CPU monitor specific docs
 
 ## 🚀 **What Was Built**
 
@@ -52,17 +50,16 @@
 - Air quality monitoring and alerts
 - Multi-unit conversion system
 
-**🎵 Media Player:**
-- Multi-player smart prioritization
-- Real-time volume monitoring
-- Dynamic icon selection
-- Process resilience and auto-restart
+**🖥️ CPU:**
+- Usage, temperature and power
+- Per-core tooltip
+- Color classes by load/temperature
 
 ## 📊 **Final Statistics**
 
 **Code Quality:**
 - **Total Python Code**: ~800+ lines
-- **Configuration Files**: 4 comprehensive JSON configs
+- **Configuration Files**: 3 comprehensive JSON configs
 - **Documentation**: 4 detailed README files
 - **Error Coverage**: 100% with graceful fallbacks
 - **Feature Implementation**: 12/12 checklist items ✅
@@ -74,8 +71,8 @@
 - **Performance** - Optimized with caching and monitoring
 
 **System Integration:**
-- **Waybar Native** - JSON output with proper CSS classes
-- **Linux Compliant** - Uses standard system tools (playerctl)
+- **Waybar-style JSON** - `text`/`tooltip`/`class` output, read by the Omarchy shell
+- **Linux Compliant** - Uses standard system tools
 - **Resource Efficient** - Minimal memory/CPU footprint
 - **Maintenance Friendly** - Comprehensive logging system
 

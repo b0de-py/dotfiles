@@ -1,0 +1,103 @@
+{
+  "bar": {
+    "centerAnchor": "omarchy.clock",
+    "layout": {
+      "left": [
+        {
+          "id": "omarchy.workspaces"
+        },
+        {
+          "id": "omarchy.media"
+        }
+      ],
+      "center": [
+        {
+          "id": "calendar",
+          "type": "command",
+          "exec": "/usr/bin/python3 ~/.config/waybar/way_calendar.py | sed -E 's/<[^>]+>//g'",
+          "interval": 60,
+          "onClick": "/usr/bin/python3 ~/.config/waybar/way_calendar.py 1"
+        },
+        {
+          "id": "omarchy.clock",
+          "format": "HH:mm:ss",
+          "formatAlt": "d MMMM 'W'ww yyyy",
+          "verticalFormat": "HH\n—\nmm"
+        },
+        {
+          "id": "weather",
+          "type": "qml",
+          "source": "~/.config/omarchy/bar/modules/colored-command.qml",
+          "exec": "/usr/bin/python3 ~/.config/waybar/weather.py",
+          "interval": 1800,
+          "colors": {
+            "frio": "#89dceb",
+            "ameno": "#a6e3a1",
+            "quente": "#f9e2af",
+            "muito-quente": "#fab387",
+            "extremo": "#f38ba8"
+          }
+        },
+        {
+          "id": "omarchy.system-update"
+        },
+        {
+          "id": "omarchy.indicators"
+        }
+      ],
+      "right": [
+        {
+          "id": "habit-tracker",
+          "type": "qml",
+          "source": "~/codes/github/automations/habit-tracker/bar/habits.qml"
+        },
+        {
+          "id": "ai-usage",
+          "type": "qml",
+          "interval": 300
+        },
+        {
+          "id": "fnzs.tray"
+        },
+        {
+          "id": "omarchy.bluetooth"
+        },
+        {
+          "id": "omarchy.network"
+        },
+        {
+          "id": "omarchy.audio"
+        },
+        {
+          "id": "cpu-detailed",
+          "type": "qml",
+          "source": "~/.config/omarchy/bar/modules/colored-command.qml",
+          "exec": "/usr/bin/python3 ~/.config/waybar/cpu-detailed.py --once",
+          "interval": 3,
+          "onClick": "omarchy-launch-or-focus-tui btop",
+          "bold": true,
+          "colors": {
+            "good": "#89b4fa",
+            "medium": "#f9e2af",
+            "warning": "#fab387",
+            "critical": "#f38ba8"
+          }
+        },
+        {
+          "id": "omarchy.monitor"
+        },
+        {
+          "id": "omarchy.power"
+        }
+      ]
+    },
+    "position": "top",
+    "transparent": true
+  },
+  "idle": {
+    "lock": 300,
+    "screensaver": 150
+  },
+  "plugins": [],
+  "version": 1
+}
