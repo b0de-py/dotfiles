@@ -1,0 +1,47 @@
+#!/bin/bash
+# Reaplica o tema de boot B0DE (logo + fundo preto no Plymouth/SDDM e cores no
+# Limine) quando uma atualização volta os arquivos do pacote omarchy-settings
+# para o padrão do Omarchy.
+#
+# Instalação (roda no fim de todo `omarchy update`):
+#   omarchy hook install post-update ~/codes/github/dotfiles/omarchy-theme/bode-boot-theme.hook
+#
+# Só pede sudo se alguma coisa tiver sido sobrescrita; se estiver tudo certo, não faz nada.
+set -euo pipefail
+
+LOGO=$HOME/codes/github/dotfiles/omarchy-theme/logo-bode.png
+THEME=/usr/share/plymouth/themes/omarchy
+# Cópia da logo já processada pelo omarchy-plymouth-set, para comparar com a instalada.
+APPLIED=${XDG_STATE_HOME:-$HOME/.local/state}/bode-boot-theme/logo.png
+
+[[ -f $LOGO ]] || exit 0
+
+rebuild=false
+
+if [[ ! -f $APPLIED ]] || ! cmp -s "$APPLIED" "$THEME/logo.png"; then
+  echo "Tema de boot B0DE sobrescrito; reaplicando logo e cores no Plymouth/SDDM..."
+  # Já regenera as imagens de boot.
+  omarchy-plymouth-set 000000 ffcc00 "$LOGO"
+  install -D -m 644 "$THEME/logo.png" "$APPLIED"
+fi
+
+# Fundo das mensagens de texto do boot (Esc no Plymouth); o omarchy-plymouth-set não mexe nele.
+if ! grep -q '^ConsoleLogBackgroundColor=0x000000$' "$THEME/omarchy.plymouth"; then
+  echo "Fundo do console do Plymouth sobrescrito; deixando preto..."
+  sudo sed -i 's/^ConsoleLogBackgroundColor=.*/ConsoleLogBackgroundColor=0x000000/' "$THEME/omarchy.plymouth"
+  rebuild=true
+fi
+
+if grep -E '^interface_help_color(_bright)?:' /boot/limine.conf | grep -vq 'ffcc00'; then
+  echo "Cores de ajuda do Limine sobrescritas; reaplicando..."
+  sudo sed -i -E 's/^(interface_help_color(_bright)?): .*/\1: ffcc00/' /boot/limine.conf
+  sudo limine-enroll-config
+fi
+
+if $rebuild; then
+  if command -v limine-mkinitcpio >/dev/null; then
+    sudo limine-mkinitcpio
+  else
+    sudo mkinitcpio -P
+  fi
+fi

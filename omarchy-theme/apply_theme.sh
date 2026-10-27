@@ -1,53 +1,49 @@
 #!/bin/bash
 set -Eeuo pipefail
 
-# Pega o diretório exato de onde o script está sendo executado no seu dotfiles
-SCRIPT_DIR=$(dirname "$(realpath "$0")")
+# Aplica o tema de boot B0DE no Omarchy Quattro: logo e fundo preto no Plymouth
+# (boot/desbloqueio) e no SDDM (login), e cores amarelo/preto no Limine.
+# Rode como seu usuário; ele pede sudo onde precisa.
 
-LIMINE_CONF="$HOME/.local/share/omarchy/default/limine/limine.conf"
+SCRIPT_DIR=$(dirname "$(realpath "$0")")
+LOGO=$SCRIPT_DIR/logo-bode.png
+LIMINE_CONF=/boot/limine.conf
+THEME=/usr/share/plymouth/themes/omarchy
+# Mesma referência usada pelo bode-boot-theme.hook para saber se o tema foi sobrescrito.
+APPLIED=${XDG_STATE_HOME:-$HOME/.local/state}/bode-boot-theme/logo.png
 
 echo "Validando pré-requisitos..."
-if [ ! -f "$LIMINE_CONF" ]; then
-    echo "Erro: Arquivo $LIMINE_CONF não encontrado. Abortando." >&2
-    exit 1
-fi
+for file in "$LOGO" "$LIMINE_CONF" "$THEME/omarchy.plymouth"; do
+    if ! sudo test -f "$file"; then
+        echo "Erro: $file não encontrado. Abortando." >&2
+        exit 1
+    fi
+done
 
-if [ ! -f "$SCRIPT_DIR/logo-bode.png" ]; then
-    echo "Erro: Imagem $SCRIPT_DIR/logo-bode.png não encontrada. Abortando." >&2
-    exit 1
-fi
+echo "Aplicando logo e fundo preto no Plymouth e no SDDM..."
+omarchy-plymouth-set 000000 ffcc00 "$LOGO"
+install -D -m 644 "$THEME/logo.png" "$APPLIED"
 
-if [ ! -d "/usr/share/plymouth/themes/omarchy" ]; then
-    echo "Erro: Diretório do tema Plymouth (/usr/share/plymouth/themes/omarchy) não encontrado. Abortando." >&2
-    exit 1
-fi
+# Fundo das mensagens de texto do boot (Esc no Plymouth); o omarchy-plymouth-set não mexe nele.
+sudo sed -i 's/^ConsoleLogBackgroundColor=.*/ConsoleLogBackgroundColor=0x000000/' "$THEME/omarchy.plymouth"
 
-echo "Aplicando as novas cores do Limine (amarelo: ffcc00 e fundo preto: 000000)..."
-sed -i 's/interface_branding_color:.*/interface_branding_color: ffcc00/' "$LIMINE_CONF"
-sed -i 's/interface_help_color:.*/interface_help_color: ffcc00/' "$LIMINE_CONF"
-sed -i 's/interface_help_color_bright:.*/interface_help_color_bright: ffcc00/' "$LIMINE_CONF"
-sed -i 's/term_background:.*/term_background: 000000/' "$LIMINE_CONF"
-sed -i 's/backdrop:.*/backdrop: 000000/' "$LIMINE_CONF"
-sed -i 's/term_foreground:.*/term_foreground: ffcc00/' "$LIMINE_CONF"
-sed -i 's/term_foreground_bright:.*/term_foreground_bright: ffcc00/' "$LIMINE_CONF"
-sed -i 's/term_background_bright:.*/term_background_bright: 000000/' "$LIMINE_CONF"
+echo "Aplicando as cores do Limine (amarelo: ffcc00 e fundo preto: 000000)..."
+sudo sed -i -E \
+    -e 's/^(interface_branding_color|interface_help_color|interface_help_color_bright|term_foreground|term_foreground_bright):.*/\1: ffcc00/' \
+    -e 's/^(term_background|term_background_bright|backdrop):.*/\1: 000000/' \
+    -e 's/^(term_palette|term_palette_bright):.*/\1: 000000;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00/' \
+    "$LIMINE_CONF"
 
-# Cores da paleta do terminal (preto e amarelo para tela de senha LUKS)
-sed -i 's/^term_palette:.*$/term_palette: 000000;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00/' "$LIMINE_CONF"
-sed -i 's/^term_palette_bright:.*$/term_palette_bright: 000000;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00;ffcc00/' "$LIMINE_CONF"
-
-echo "Enferrando configuração do Limine no boot (limine-enroll-config)..."
+echo "Registrando a configuração do Limine (limine-enroll-config)..."
 sudo limine-enroll-config
 
-echo "Fazendo backup da imagem original e injetando a sua logo do repositório..."
-if [ ! -f "/usr/share/plymouth/themes/omarchy/logo.png.bak" ]; then
-    sudo cp /usr/share/plymouth/themes/omarchy/logo.png /usr/share/plymouth/themes/omarchy/logo.png.bak
+echo "Atualizando as imagens de boot (initramfs)..."
+if command -v limine-mkinitcpio >/dev/null; then
+    sudo limine-mkinitcpio
+else
+    sudo mkinitcpio -P
 fi
 
-# Pega a imagem 'logo-bode.png' que está na mesma pasta que este script
-sudo cp "$SCRIPT_DIR/logo-bode.png" /usr/share/plymouth/themes/omarchy/logo.png
-
-echo "Atualizando as imagens de boot (initramfs)..."
-sudo mkinitcpio -P
-
-echo "Pronto! Bootloader e Plymouth personalizados aplicados com sucesso."
+echo "Pronto! Reinicie para ver o novo boot."
+echo "Para reaplicar sozinho depois de cada 'omarchy update':"
+echo "  omarchy hook install post-update $SCRIPT_DIR/bode-boot-theme.hook"
