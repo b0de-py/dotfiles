@@ -17,8 +17,10 @@ dotfiles/
 │   ├── shell.toml                # Overrides do shell (fonte da barra)
 │   ├── bar/modules/              # Módulos QML da barra
 │   │   ├── ai-usage.qml          # Claude + Antigravity (gaveta no hover)
-│   │   └── colored-command.qml   # Comando com cor por classe (CPU, clima)
+│   │   ├── colored-command.qml   # Comando com cor por classe (CPU, clima)
+│   │   └── day-colored-command.qml # Calendário com o dia do mês colorido
 │   ├── plugins/fnzs.tray/        # Clone do tray com a setinha colada no Bluetooth
+│   ├── plugins/fnzs.clock/       # Clone do relógio: segundos e cor por período (manhã/tarde/noite)
 │   └── branding/                 # Logo B0DE (about.png/about.txt) e screensaver
 ├── omarchy-theme/                # Tema de boot B0DE (Limine/Plymouth/SDDM) + hook
 ├── bash/ff-logo.sh               # fastfetch com a logo em sixel ao abrir o terminal
@@ -114,6 +116,7 @@ mkdir -p ~/.config/omarchy/bar/modules ~/.config/omarchy/plugins ~/.config/wayba
 cp omarchy/shell.json omarchy/shell.toml ~/.config/omarchy/
 cp omarchy/bar/modules/*.qml ~/.config/omarchy/bar/modules/
 cp -r omarchy/plugins/fnzs.tray ~/.config/omarchy/plugins/
+cp -r omarchy/plugins/fnzs.clock ~/.config/omarchy/plugins/
 cp waybar/* ~/.config/waybar/
 omarchy restart shell
 ```
