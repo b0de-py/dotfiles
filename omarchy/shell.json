@@ -1,6 +1,6 @@
 {
   "bar": {
-    "centerAnchor": "omarchy.clock",
+    "centerAnchor": "fnzs.clock",
     "layout": {
       "left": [
         {
@@ -13,13 +13,20 @@
       "center": [
         {
           "id": "calendar",
-          "type": "command",
-          "exec": "/usr/bin/python3 ~/.config/waybar/way_calendar.py | sed -E 's/<[^>]+>//g'",
+          "type": "qml",
+          "source": "~/.config/omarchy/bar/modules/day-colored-command.qml",
+          "dayColor": "#f38ba8",
+          "exec": "/usr/bin/python3 ~/.config/waybar/way_calendar.py",
           "interval": 60,
           "onClick": "/usr/bin/python3 ~/.config/waybar/way_calendar.py 1"
         },
         {
-          "id": "omarchy.clock",
+          "id": "fnzs.clock",
+          "colors": {
+            "manha": "#f9e2af",
+            "tarde": "#fab387",
+            "noite": "#89b4fa"
+          },
           "format": "HH:mm:ss",
           "formatAlt": "d MMMM 'W'ww yyyy",
           "verticalFormat": "HH\n—\nmm"
